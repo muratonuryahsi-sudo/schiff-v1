@@ -1,0 +1,25 @@
+meta {
+  name: Deprecation
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{api_url}}/deprecated
+  body: none
+  auth: inherit
+}
+
+headers {
+  X-Version: 0.0.1
+}
+
+assert {
+  res.status: eq 200
+  res.body.deprecated: isString
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

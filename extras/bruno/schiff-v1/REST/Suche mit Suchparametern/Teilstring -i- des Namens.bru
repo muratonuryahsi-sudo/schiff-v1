@@ -1,0 +1,44 @@
+meta {
+  name: Teilstring "i" des Namens
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{api_url}}?name=i
+  body: none
+  auth: inherit
+}
+
+params:query {
+  name: i
+}
+
+headers {
+  Accept: application/json
+  X-Version: 1.0.0
+}
+
+assert {
+  res.status: eq 200
+  res.headers['content-type']: eq application/json
+  res.body: isArray
+  res.body: isNotEmpty
+}
+
+tests {
+  test('Body: Nachname enthaelt "i" und ID vorhanden', () => {
+    res.getBody()
+      .forEach(kunde => {
+        const { nachname, id } = kunde;
+        expect(nachname).to.be.a('string');
+        expect(nachname.toLowerCase()).to.include('i');
+        expect(id).to.be.a('string').that.matches(/[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/u);
+      });
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

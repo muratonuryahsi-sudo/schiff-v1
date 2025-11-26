@@ -1,0 +1,36 @@
+meta {
+  name: Nicht-vorhandener Name
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{api_url}}?nachname=Zeta
+  body: none
+  auth: inherit
+}
+
+params:query {
+  nachname: Zeta
+}
+
+headers {
+  Accept: application/json
+  X-Version: 1.0.0
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  test('Statuscode 404', () => {
+      expect(res.getStatus()).to.equal(404);
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

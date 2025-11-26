@@ -1,0 +1,16 @@
+out
+build
+target
+.gradle
+gradle.properties
+*.idea
+*.iml
+*.ipr
+*.iws
+src/main/resources/.reloadtrigger
+.kpt-pipeline
+extras/kubernetes/postgres/.kpt-pipeline
+
+# Sensible Daten
+extras/compose/db/postgres/db_password.txt
+src/main/resources/private-key.pem

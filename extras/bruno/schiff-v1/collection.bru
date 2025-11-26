@@ -1,0 +1,15 @@
+meta {
+  name: schiff-v1
+}
+
+auth {
+  mode: none
+}
+
+vars:pre-request {
+  base_url: https://localhost:8443
+  api_url: {{base_url}}/api
+  actuator_url: {{base_url}}/actuator
+  health_url: {{actuator_url}}/health
+  ~base_url: http://localhost:8080
+}

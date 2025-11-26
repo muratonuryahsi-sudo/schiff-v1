@@ -1,0 +1,25 @@
+meta {
+  name: health
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{actuator_url}}/health
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq UP
+  res.body.components.diskSpace.status.status: eq UP
+  res.body.components.liveness.status: eq UP
+  res.body.components.readiness.status: eq UP
+  : 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

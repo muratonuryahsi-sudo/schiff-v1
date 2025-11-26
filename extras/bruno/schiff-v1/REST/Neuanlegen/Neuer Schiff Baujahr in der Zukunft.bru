@@ -1,0 +1,42 @@
+meta {
+  name: Neuer Schiff Baujahr in der Zukunft
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{api_url}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  X-Version: 1.0.0
+}
+
+body:json {
+  {
+    "name": "Post-Fehler",
+    "baujahr": "2035-01-01",
+    "kapazitaet": 3400,
+    "typ": "X",
+    "username": "admin",
+    "hafen": {
+      "name": "Hamburg",
+      "land": "Deutschland"
+    }
+  }
+  
+}
+
+assert {
+  res.status: eq 422
+  res.headers['content-type']: eq application/problem+json
+  res.body.detail: isString
+  res.body.detail: contains Emailadresse
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

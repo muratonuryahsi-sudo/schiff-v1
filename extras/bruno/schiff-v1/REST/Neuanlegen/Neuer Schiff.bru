@@ -1,0 +1,41 @@
+meta {
+  name: Neuer Schiff
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{api_url}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  X-Version: 1.0.0
+}
+
+body:json {
+  {
+    "name": "Post-Test",
+    "baujahr": "2005-01-01",
+    "kapazitaet": 3400,
+    "typ": "X",
+    "username": "admin",
+    "hafen": {
+      "name": "Hamburg",
+      "land": "Deutschland"
+    }
+  }
+  
+}
+
+assert {
+  res.status: eq 201
+  res.headers['location']: matches /api/[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$
+  res.body: isEmpty
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

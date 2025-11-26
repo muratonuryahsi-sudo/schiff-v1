@@ -1,0 +1,29 @@
+meta {
+  name: Nicht-vorhandene Typ
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{api_url}}?typ=P
+  body: none
+  auth: inherit
+}
+
+params:query {
+  typ: P
+}
+
+headers {
+  Accept: application/json
+  X-Version: 1.0.0
+}
+
+assert {
+  res.status: eq 404
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

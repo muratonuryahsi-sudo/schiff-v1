@@ -1,0 +1,36 @@
+meta {
+  name: Alle
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{api_url}}
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+  X-Version: 1.0.0
+}
+
+assert {
+  res.status: eq 200
+  res.headers['content-type']: eq application/json
+  res.body: isArray
+  res.body: isNotEmpty
+}
+
+tests {
+  test('ID', () => {
+    res.getBody()
+      .map(kunde => kunde.id)
+      .forEach(id => expect(id).to.be.a('string').that.matches(/[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/u));
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

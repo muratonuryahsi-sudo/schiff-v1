@@ -1,0 +1,22 @@
+meta {
+  name: info
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{actuator_url}}/info
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.body.os: isDefined
+  res.body.os: isNotEmpty
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
