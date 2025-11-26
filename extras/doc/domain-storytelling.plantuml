@@ -1,0 +1,53 @@
+' Copyright (C) 2025 - present Murat Yahsi, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program. If not, see <https://www.gnu.org/licenses/>.
+@startuml
+
+' Internet-Verbindung erforderlich
+' https://github.com/tmorin/plantuml-libs
+' https://github.com/tmorin/plantuml-libs/blob/master/distribution/fontawesome-6/Regular/README.md
+' https://github.com/tmorin/plantuml-libs/blob/master/distribution/fontawesome-6/Solid/README.md
+' https://fontawesome.com/icons
+' alternativ: https://github.com/johthor/DomainStory-PlantUML
+
+!$Story_Layout = "top-to-bottom"
+
+!include https://raw.githubusercontent.com/tmorin/plantuml-libs/master/distribution/domainstorytelling/single.puml
+
+Title("Neues Schiff erfassen")
+
+include("domainstorytelling/Actor/User")
+include("fontawesome-6/Solid/Laptop")
+include("fontawesome-6/Solid/List")
+include("fontawesome-6/Solid/At")
+include("fontawesome-6/Solid/Check")
+
+User("reederei_mitarbeiter", "Reederei-Mitarbeiter")
+List("schiffsdaten", "Schiffsdaten")
+Laptop("schiffsverwaltung", "Schiffsverwaltung")
+Check("daten_geprueft", "Daten geprüft")
+At("bestaetigung", "Bestätigung")
+
+reederei_mitarbeiter -up-> schiffsdaten : Activity("1", "erfasst")
+schiffsdaten -right-> schiffsverwaltung : Activity("2", "übermittelt an")
+
+schiffsverwaltung -down-> daten_geprueft : Activity("3", "prüft")
+daten_geprueft -[hidden]right-> schiffsdaten
+
+schiffsverwaltung -down-> schiffsdaten : Activity("4", "speichert")
+
+schiffsverwaltung -left-> bestaetigung : Activity("5", "sendet")
+bestaetigung -left-> reederei_mitarbeiter
+
+@enduml

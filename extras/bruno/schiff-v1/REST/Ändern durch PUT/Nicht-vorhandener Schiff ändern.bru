@@ -1,0 +1,44 @@
+meta {
+  name: Nicht-vorhandener Schiff ändern
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{api_url}}/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+}
+
+headers {
+  If-Match: "0"
+  X-Version: 1.0.0
+}
+
+body:json {
+  {
+    "name": "Put-Test",
+    "baujahr": "2005-01-01",
+    "kapazitaet": 3400,
+    "typ": "X",
+    "username": "admin",
+    "hafen": {
+      "name": "Hamburg",
+      "land": "Deutschland"
+    }
+  }
+  
+}
+
+assert {
+  res.status: eq 404
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

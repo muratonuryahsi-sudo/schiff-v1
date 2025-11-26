@@ -1,0 +1,110 @@
+' Copyright (C) 2025 - present Murat Yahsi Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml schiffHandler
+
+skinparam classAttributeIconSize 0
+
+package jakarta.servlet.http {
+    class HttpServletRequest
+}
+
+package org.springframework {
+    package web.bind.annotation {
+        interface "@RestController" as RestController
+        interface "@RequestMapping" as RequestMapping
+        interface "@PathVariable" as PathVariable
+        interface "@RequestParam" as RequestParam
+        interface "@ExceptionHandler" as ExceptionHandler
+        interface "@ResponseStatus" as ResponseStatus
+
+        RequestMapping .left[hidden].> RestController
+    }
+
+    package data.web {
+        class PagedModel
+    }
+
+    package http {
+        class ResponseEntity<T>
+    }
+    package security.core {
+        class Authentication
+    }
+    package util {
+        class MultiValueMap<K,V>
+    }
+}
+
+package java.util {
+    class UUID
+
+    UUID .up[hidden].> HttpServletRequest
+}
+
+package com.acme.schiff {
+    package entity {
+        class Schiff << entity >>
+    }
+
+    package service {
+        class SchiffService << control >> << @Service >>
+        class NotFoundException
+        class AccessForbiddenException
+
+        SchiffService .right[hidden].> NotFoundException
+        NotFoundException .right[hidden].> AccessForbiddenException
+    }
+
+    package controller #DDDDDD {
+        class SchiffController << boundary >> << @RestController >> << @RequestMapping >> {
+            + @GetMapping getById(@PathVariable id: UUID): Schiff
+            + @GetMapping get(@RequestParam queryParams: MultiValueMap<String, String>): Collection<Schiff>
+            + @GetMapping deprecated(): Map<String, String>
+        }
+
+        class GlobalExceptionHandler << @ControllerAdvice >> {
+            + @ExceptionHandler @ResponseStatus onNotFound(ex: NotFoundException)
+            + @ExceptionHandler @ResponseStatus onAccessForbidden(ex: AccessForbiddenException)
+        }
+
+        SchiffController o-right-> "1" SchiffService : service
+        SchiffController ..> Schiff
+        SchiffController ..> PagedModel
+
+        SchiffController .right.> HttpServletRequest
+        SchiffController .up.> MultiValueMap
+        SchiffController .up.> Authentication
+        SchiffController .up.> ResponseEntity
+
+        SchiffController .up.> RestController
+        SchiffController .up.> RequestMapping
+        SchiffController .up.> PathVariable
+        SchiffController .up.> RequestParam
+
+        GlobalExceptionHandler .up.> ExceptionHandler
+        GlobalExceptionHandler .up.> ResponseStatus
+        GlobalExceptionHandler ..> NotFoundException
+        GlobalExceptionHandler ..> AccessForbiddenException
+        GlobalExceptionHandler .[hidden].> Schiff
+
+        SchiffController .right.> UUID
+    }
+}
+
+hide empty members
+
+footer (c) Murat Yahsi
+
+@enduml

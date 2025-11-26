@@ -1,0 +1,45 @@
+meta {
+  name: Schiff Ändern
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{api_url}}/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: fdcae043-6950-4a4f-ac19-47df268e3dfe
+}
+
+headers {
+  If-Match: "0"
+  X-Version: 1.0.0
+}
+
+body:json {
+  {
+    "name": "Put-Test",
+    "baujahr": "2005-01-01",
+    "kapazitaet": 3400,
+    "typ": "X",
+    "username": "admin",
+    "hafen": {
+      "name": "Hamburg",
+      "land": "Deutschland"
+    }
+  }
+  
+}
+
+assert {
+  res.status: eq 204
+  res.body: isEmpty
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

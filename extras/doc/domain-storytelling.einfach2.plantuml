@@ -1,0 +1,38 @@
+' Copyright (C) 2025 - present Murat Yahsi, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program. If not, see <https://www.gnu.org/licenses/>.
+@startuml
+
+' https://github.com/johthor/DomainStory-PlantUML
+' alternativ: https://github.com/tmorin/plantuml-libs
+
+!$Story_Layout = 'top-to-bottom'
+
+!include <DomainStory/domainStory>
+'!include https://raw.githubusercontent.com/johthor/DomainStory-PlantUML/main/domainStory.puml
+
+Boundary(domain_storytelling, "Domain Storytelling") {
+
+Person(fachexperte, "Fachexperte/in")
+Person(it_experte, "IT-Experte/in")
+Conversation(domain_story_erläuterung, "Domain Story")
+Document(domain_story_final, "Domain Story")
+
+activity(>_, fachexperte, erläutert, domain_story_erläuterung)
+activity(>+, domain_story_erläuterung, für, it_experte)
+activity(+, it_experte, erstellen bzw.\nzeichnen, domain_story_final)
+activity(+, fachexperte, Review durchführen und \nggf. korrigieren, domain_story_final)
+
+}
+@enduml

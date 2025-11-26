@@ -1,0 +1,97 @@
+' Copyright (C) 2025 - present Murat Yahsi, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml SchiffWriteController
+
+skinparam classAttributeIconSize 0
+
+package jakarta.servlet.http {
+    interface HttpServletRequest
+}
+
+package org.springframework {
+    package stereotype {
+        annotation "@Controller" as Controller
+    }
+
+    package web.bind.annotation {
+        annotation "@RequestMapping" as RequestMapping
+        annotation "@PathVariable" as PathVariable
+        annotation "@RequestBody" as RequestBody
+        annotation "@ExceptionHandler" as ExceptionHandler
+
+        RequestBody .left[hidden].> Controller
+        ExceptionHandler .left[hidden].> Controller
+    }
+
+    package http {
+        class ResponseEntity<T>
+        package converter {
+            annotation HttpMessageNotReadableException
+        }
+    }
+
+    package web {
+        interface ErrorResponse
+    }
+
+    package web.bind {
+        annotation MethodArgumentNotValidException
+    }
+}
+
+package java.util {
+    class UUID
+}
+
+package com.acme.schiff {
+    package service {
+        class SchiffWriteService << control >> << @Service >>
+    }
+
+    package controller #DDDDDD {
+        class SchiffDTO <<record>>
+        SchiffDTO .[hidden].> UUID
+        SchiffDTO .[hidden].> SchiffWriteService
+
+        class SchiffWriteController << boundary >> << @Controller >> << @RequestMapping >> {
+            + @PostMapping post(@RequestBody dto: SchiffDTO, request: HttpServletRequest): ResponseEntity<Void>
+            + @PutMapping put(@PathVariable id: UUID, @RequestBody dto: SchiffDTO): void
+            + @DeleteMapping deleteById(@PathVariable id: UUID): void
+            + @ExceptionHandler onConstraintViolations(ex: MethodArgumentNotValidException): ErrorResponse
+            + @ExceptionHandler onMessageNotReadable(ex: HttpMessageNotReadableException): ErrorResponse
+        }
+
+        SchiffWriteController o-right-> "1" SchiffWriteService
+        SchiffWriteController ..> SchiffDTO
+        SchiffWriteController .up.> UUID
+        SchiffWriteController .up.> HttpServletRequest
+        SchiffWriteController .up.> ResponseEntity
+        SchiffWriteController .up.> ErrorResponse
+        SchiffWriteController .up.> MethodArgumentNotValidException
+        SchiffWriteController .up.> HttpMessageNotReadableException
+
+        SchiffWriteController .up.> Controller
+        SchiffWriteController .up.> RequestMapping
+        SchiffWriteController .up.> PathVariable
+        SchiffWriteController .up.> RequestBody
+        SchiffWriteController .up.> ExceptionHandler
+    }
+}
+
+hide empty members
+
+footer (c) Murat Yahsi
+
+@enduml

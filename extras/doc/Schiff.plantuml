@@ -1,0 +1,76 @@
+' Copyright (C) 2025 - present Murat Yahsi, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml Schiff
+
+skinparam classAttributeIconSize 0
+
+package java {
+    package util {
+        class UUID
+        interface List<T>
+    }
+
+    package time {
+        class LocalDate
+    }
+}
+
+package com.acme.schiff {
+    package entity #E7FEFF {
+
+        class Hafen {
+            id: UUID
+            name: String
+            land: String
+        }
+
+        class Crew {
+            id: UUID
+            vorname: String
+            nachname: String
+            rolle: String
+        }
+
+        enum SchiffTyp {
+            KREUZFAHRT
+            CONTAINER
+            MILITAER
+            FAEHRE
+            SEGELBOOT
+        }
+
+        class Schiff {
+            id: UUID
+            name: String
+            baujahr: LocalDate
+            kapazitaet: int
+            typ: SchiffTyp
+        }
+
+        Schiff *--> "1" Hafen : hafen
+        Schiff *--> "0..*" Crew : crewList
+
+        Schiff .right.> LocalDate
+        Schiff .up.> SchiffTyp
+        Schiff .right.> UUID
+        Crew .left.> List
+        Crew .up.> UUID
+        Hafen .up.> UUID
+    }
+}
+
+hide empty members
+footer (c) Murat Yahsi
+@enduml

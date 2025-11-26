@@ -1,0 +1,58 @@
+' Copyright (C) 2025 - present Murat Yahsi, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml SchiffWriteService
+
+skinparam classAttributeIconSize 0
+
+package java.util {
+    class UUID
+}
+
+package org.springframework {
+    package stereotype {
+        annotation Service
+    }
+}
+
+package com.acme.schiff {
+    package entity {
+        class Schiff << entity >>
+        Schiff .up[hidden].> UUID
+    }
+
+    package repository {
+        class SchiffRepository << control >> << @Repository >>
+    }
+
+    package service #DDDDDD {
+        class SchiffWriteService << control >> << @Service >> {
+            + create(schiff: Schiff): Schiff
+            + update(schiff: Schiff, id: UUID)
+            + deleteById(id: UUID)
+        }
+
+        SchiffWriteService o--> "1" SchiffRepository : repo
+
+        SchiffWriteService .right.> Schiff
+        SchiffWriteService .up.> UUID
+        SchiffWriteService .up.> Service
+    }
+}
+
+hide empty members
+
+footer (c) Murat Yahsi
+
+@enduml

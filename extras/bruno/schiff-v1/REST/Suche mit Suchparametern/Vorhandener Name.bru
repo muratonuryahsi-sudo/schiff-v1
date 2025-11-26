@@ -1,0 +1,43 @@
+meta {
+  name: Vorhandener Name
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{api_url}}?name=Titanic
+  body: none
+  auth: inherit
+}
+
+params:query {
+  name: Titanic
+}
+
+headers {
+  Accept: application/json
+  X-Version: 1.0.0
+}
+
+assert {
+  res.status: eq 200
+  res.headers['content-type']: eq application/json
+  res.body: isArray
+  res.body: isNotEmpty
+}
+
+tests {
+  test('Body: Nachname "Alpha" und ID', () => {
+    res.getBody()
+      .forEach(kunde => {
+        const { nachname, id } = kunde;
+        expect(nachname).to.be.equal('Alice');
+        expect(id).to.be.a('string').that.matches(/[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/u);
+      });
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

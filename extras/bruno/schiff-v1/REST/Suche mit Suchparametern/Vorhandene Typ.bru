@@ -1,0 +1,40 @@
+meta {
+  name: Vorhandene Typ
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{api_url}}?typ=S
+  body: none
+  auth: inherit
+}
+
+params:query {
+  typ: S
+}
+
+headers {
+  Accept: application/json
+  X-Version: 1.0.0
+}
+
+assert {
+  res.status: eq 200
+  res.headers['content-type']: eq application/json
+  res.body: isArray
+  res.body: length 1
+}
+
+tests {
+  test('Body: Email und ID', () => {
+    const { email, id } = res.getBody()[0];
+    expect(email).to.be.equal('admin@acme.com');
+    expect(id).to.be.a('string').that.matches(/[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/u);
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
