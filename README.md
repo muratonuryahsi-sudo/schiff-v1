@@ -69,8 +69,8 @@ Der Microservice kann direkt über Gradle gestartet werden:
 
 | Task | Beschreibung |
 | :--- | :--- |
-| `./gradlew test` | Führt alle Unit-Tests aus |
-| `./gradlew check` | Führt Tests und statische Codeanalyse (Checkstyle, SpotBugs, PMD) aus |
+| `./gradlew test jacocoTestReport` | Führt alle Unit-Tests aus |
+| `./gradlew checkstyleMain spotbugsMain pmdMain spotlessApply modernizer` | Führt Tests und statische Codeanalyse (Checkstyle, SpotBugs, PMD) aus |
 | `./gradlew bootBuildImage` | Erstellt ein OCI-konformes Docker-Image mittels Paketo Buildpacks |
 | `./gradlew javadoc` | Generiert die JavaDoc-Dokumentation |
 | `./gradlew asciidoctor` | Generiert das Projekthandbuch aus Asciidoc-Dateien |
