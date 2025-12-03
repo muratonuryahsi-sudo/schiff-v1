@@ -9,7 +9,7 @@ Dies ist ein Backend-Dienst auf Basis von **Spring Boot** und **Java 25**, der a
 
 ## Über das Projekt
 
-Dieses Projekt basiert auf einem offiziellen Lehr-Template (Prof. Zimmermann), wurde jedoch umfassend erweitert und angepasst, um eine vollständige, produktionsnahe Microservice-Architektur abzubilden.
+Dieses Projekt basiert auf einem offiziellen Lehr-Template (Prof. Dr. Jürgen Zimmermann), wurde jedoch umfassend erweitert und angepasst, um eine vollständige, produktionsnahe Microservice-Architektur abzubilden.
 
 **Kernfunktionen & Fokus:**
 *   **Fachliche Domäne:** Verwaltung von Schiffen (CRUD), Validierung von Eingabedaten und robustes Fehlerhandling.
